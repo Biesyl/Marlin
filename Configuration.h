@@ -368,7 +368,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the logic o
 #define MANUAL_Z_HOME_POS 300// biesyl 292.3  // For delta: Distance between nozzle and print surface after homing.
 
   #define AUTOLEVEL_GRID 36  // Distance between autolevel Z probing points, should be less than print surface radius/3.
-  #define AUTOLEVEL_GRID2 17  // Distance between autolevel Z probing points, should be less than print surface radius  / AUTOLEVEL_SIZE_GRID
+  #define AUTOLEVEL_GRID2 18  // Distance between autolevel Z probing points, should be less than print surface radius  / AUTOLEVEL_SIZE_GRID
   #define AUTOLEVEL_SIZE_GRID 5 // Drukarze3d - Biesyl Number of points to probe in first row.
 
 

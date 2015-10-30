@@ -869,17 +869,17 @@ void deploy_z_probe() {
 
 void retract_z_probe() {
   feedrate = homing_feedrate[X_AXIS];
-  destination[Z_AXIS] = current_position[Z_AXIS] + 50;
+  destination[Z_AXIS] = current_position[Z_AXIS] + 100;
   prepare_move_raw();
 
   destination[X_AXIS] = -77;
   destination[Y_AXIS] = 95;
-  destination[Z_AXIS] = 48;
+  destination[Z_AXIS] = 50;
   prepare_move_raw();
 
   // Move the nozzle below the print surface to push the probe up.
   feedrate = homing_feedrate[Z_AXIS]/10;
-  destination[Z_AXIS] = 12;  //was 20
+  destination[Z_AXIS] = 17;  //was 20
   prepare_move_raw();
 
   feedrate = homing_feedrate[Z_AXIS];
@@ -928,7 +928,7 @@ void calibrate_print_surface2(float z_offset) {
   for (int y = center_point; y >= -center_point; y--) {
     int dir = y % 2 ? -1 : 1; //direction for the movement3
     for (int x = -center_point*dir; x != (center_point +1 ) * dir; x += dir) {
-      if (x + y <=  center_point + floor(AUTOLEVEL_SIZE_GRID  /2)) { // if the point is in the hexagon
+      if (abs(x) + abs(y) <=  center_point + floor(AUTOLEVEL_SIZE_GRID  /2)) { // if the point is in the hexagon
         destination[X_AXIS] = AUTOLEVEL_GRID2 * x - z_probe_offset[X_AXIS];
         destination[Y_AXIS] = AUTOLEVEL_GRID2* y - z_probe_offset[Y_AXIS];
         bed_level2[x+center_point][y+center_point] = z_probe() + z_offset;
@@ -939,10 +939,10 @@ void calibrate_print_surface2(float z_offset) {
     }
   
     // For unprobed positions just copy nearest neighbor.
-    int end_point  = AUTOLEVEL_SIZE_GRID - abs(y) + floor ( (BED_LVL_SIZE - AUTOLEVEL_SIZE_GRID) /2) ;
+    int end_point  = AUTOLEVEL_SIZE_GRID - abs(y) + floor ( (BED_LVL_SIZE - AUTOLEVEL_SIZE_GRID) /2) ; //start point where there is no probiing
     for (int j = end_point ; j <= center_point ; j++){
-        bed_level2[j+center_point][y+center_point] = bed_level2[center_point+j-1][y+center_point]; 
-        bed_level2[AUTOLEVEL_SIZE_GRID-j][y+center_point] = bed_level2[AUTOLEVEL_SIZE_GRID-j+1][y+center_point]; 
+        bed_level2[center_point+j][y+center_point] = bed_level2[center_point+j-1][y+center_point]; 
+        bed_level2[center_point-j][y+center_point] = bed_level2[center_point-j+1][y+center_point]; 
       }
     
     // Print calibration results for manual frame adjustment.
